@@ -1,0 +1,17 @@
+title: Web Service Pagos
+description: Documentación técnica del Web Service de Recaudaciones
+remote_theme: just-the-docs/just-the-docs
+color_scheme: light
+
+aux_links:
+  "GitHub":
+    - "https://github.com/nestorcde/web-services-pagos"
+
+nav_order:
+  - index.md
+  - integration.md
+  - configuration.md
+  - deployment.md
+
+plugins:
+  - jekyll-remote-theme
