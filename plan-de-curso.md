@@ -79,11 +79,11 @@ nav_order: 5
 | 4 | Jue 02/07 | M2 | TypeScript I — tipos e interfaces |
 | 5 | Mar 07/07 | M2 | TypeScript II — POO, clases y genéricos |
 | 6 | Jue 09/07 | M3 | Node.js, npm y estructura de un proyecto |
-| 7 | Mar 14/07 | M4 | Express I — servidor, rutas y middlewares |
-| 8 | Jue 16/07 | M4 | Express II — routers, errores y validación con Zod |
-| 9 | Mar 21/07 | M5 | Bases de datos relacionales y SQL I |
-| 10 | Jue 23/07 | M5 | PostgreSQL II — joins, transacciones, PL/pgSQL y driver `pg` |
-| 11 | Mar 28/07 | M6 | Configuración, entorno seguro, logging y Drizzle |
+| 7 | Mar 14/07 | M4 | Bases de datos relacionales y SQL I |
+| 8 | Jue 16/07 | M4 | PostgreSQL II — joins, transacciones, PL/pgSQL y driver `pg` |
+| 9 | Mar 21/07 | M5 | Configuración, entorno seguro, logging y Drizzle |
+| 10 | Jue 23/07 | M6 | Express I — servidor, rutas y middlewares |
+| 11 | Mar 28/07 | M6 | Express II — routers, errores y validación con Zod |
 | 12 | Jue 30/07 | M7 | Arquitectura Limpia — capas y dependencias |
 | 13 | Mar 04/08 | M7 | Dominio del proyecto — recaudadoras, deudas y comisiones |
 | 14 | Jue 06/08 | M8 | Caso de uso: consulta de deudas (GetInvoices) |
@@ -169,18 +169,53 @@ nav_order: 5
 
 ---
 
-### 🟦 Módulo 4 — API con Express
+### 🟦 Módulo 4 — Base de datos
 
-#### Clase 7 — Martes 14/07 — Express I (servidor, rutas y middlewares)
+#### Clase 7 — Martes 14/07 — Bases de datos relacionales y SQL I
+**Objetivos:** fundamentos de datos.
+- Modelo relacional: tablas, columnas, claves primarias y foráneas.
+- SQL: `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `WHERE`, `ORDER BY`.
+- Tipos de datos, `NULL`, restricciones.
+- Recorrido del esquema del proyecto (`collectors`, `transactions`, `query_logs`, `commission_rules`, `products`) y de las tablas legadas (`b3_cobranza`, `b5_cuota_pagar`, `i1_deuda`).
+- **Práctica:** conectarse a la base de datos real y explorarla; crear tablas y poblarlas en PostgreSQL (pgAdmin / psql).
+- **Tarea:** escribir 8 consultas SELECT sobre el esquema real.
+
+#### Clase 8 — Jueves 16/07 — PostgreSQL II (joins, transacciones, PL/pgSQL y driver `pg`)
+**Objetivos:** consultas avanzadas y conexión desde Node.
+- `JOIN` (inner/left), agregaciones (`COUNT`, `SUM`, `GROUP BY`).
+- Transacciones (`BEGIN`/`COMMIT`/`ROLLBACK`) y por qué importan en pagos.
+- Funciones PL/pgSQL: las legadas `inscobranza`, `insitemcobranza`, `cerrarcobranza`, `anucobranza`.
+- Conexión desde Node con el driver `pg` (pool, queries parametrizadas, anti SQL injection).
+- **Práctica:** consultar la BD desde Node con `pg`, usando parámetros (conexión simple por ahora; la configuración robusta con entorno se ve en la Clase 9).
+- **Tarea:** escribir una consulta con JOIN que liste pagos por recaudadora.
+
+---
+
+### 🟦 Módulo 5 — Infraestructura: configuración y entorno
+
+#### Clase 9 — Martes 21/07 — Configuración, entorno seguro, logging y Drizzle
+**Objetivos:** preparar la base de infraestructura para conectarse a los datos de forma segura.
+- Variables de entorno con `.env` y validación estricta con **Zod** (`src/config/env.ts`).
+- Logging estructurado con **Winston** (`src/config/logger.ts`) y Morgan.
+- Introducción a **Drizzle ORM/Kit**: schema, `drizzle:generate`, migraciones.
+- Scripts `db:init`, `db:migrate`, `seed` del proyecto.
+- **Práctica:** crear `env.ts` validado y `logger.ts`; conectar el pool de `pg` desde la config y correr una migración.
+- **Tarea:** agregar una variable de entorno nueva validada con Zod.
+
+---
+
+### 🟦 Módulo 6 — API con Express
+
+#### Clase 10 — Jueves 23/07 — Express I (servidor, rutas y middlewares)
 **Objetivos:** levantar una API REST.
 - HTTP: métodos, status codes, headers, body, query params.
 - Crear un servidor Express; `req`/`res`.
 - Rutas `GET`/`POST`; parámetros de ruta y query.
 - Concepto de middleware; `express.json()`, `morgan`.
-- **Práctica:** reconstruir `src/app.ts` paso a paso (health check, JSON, logging).
-- **Tarea:** crear endpoints CRUD en memoria para “productos”.
+- **Práctica:** reconstruir `src/app.ts` paso a paso (health check, JSON, logging) y exponer una consulta real a la BD por HTTP.
+- **Tarea:** crear endpoints que devuelvan datos reales de la tabla `products`.
 
-#### Clase 8 — Jueves 16/07 — Express II (routers, errores y validación con Zod)
+#### Clase 11 — Martes 28/07 — Express II (routers, errores y validación con Zod)
 **Objetivos:** organizar y blindar la API.
 - Routers modulares (patrón `createInvoiceRoutes`, `createPaymentRoutes`).
 - Middleware de manejo de errores centralizado (`errorHandler`).
@@ -191,38 +226,7 @@ nav_order: 5
 
 ---
 
-### 🟦 Módulo 5 — Base de datos
-
-#### Clase 9 — Martes 21/07 — Bases de datos relacionales y SQL I
-**Objetivos:** fundamentos de datos.
-- Modelo relacional: tablas, columnas, claves primarias y foráneas.
-- SQL: `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `WHERE`, `ORDER BY`.
-- Tipos de datos, `NULL`, restricciones.
-- Recorrido del esquema del proyecto (`collectors`, `transactions`, `query_logs`, `commission_rules`, `products`).
-- **Práctica:** crear tablas y poblarlas en PostgreSQL (pgAdmin / psql).
-- **Tarea:** escribir 8 consultas SELECT sobre el esquema dado.
-
-#### Clase 10 — Jueves 23/07 — PostgreSQL II (joins, transacciones, PL/pgSQL y driver `pg`)
-**Objetivos:** consultas avanzadas y conexión desde Node.
-- `JOIN` (inner/left), agregaciones (`COUNT`, `SUM`, `GROUP BY`).
-- Transacciones (`BEGIN`/`COMMIT`/`ROLLBACK`) y por qué importan en pagos.
-- Funciones PL/pgSQL: las legadas `inscobranza`, `insitemcobranza`, `cerrarcobranza`, `anucobranza`.
-- Conexión desde Node con el driver `pg` (pool, queries parametrizadas, anti SQL injection).
-- **Práctica:** consultar la BD desde Node con `pg`, usando parámetros.
-- **Tarea:** escribir una consulta con JOIN que liste pagos por recaudadora.
-
-#### Clase 11 — Martes 28/07 — Configuración, entorno seguro, logging y Drizzle
-**Objetivos:** preparar la base de infraestructura.
-- Variables de entorno con `.env` y validación estricta con **Zod** (`src/config/env.ts`).
-- Logging estructurado con **Winston** (`src/config/logger.ts`) y Morgan.
-- Introducción a **Drizzle ORM/Kit**: schema, `drizzle:generate`, migraciones.
-- Scripts `db:init`, `db:migrate`, `seed` del proyecto.
-- **Práctica:** crear `env.ts` validado y `logger.ts`; correr una migración.
-- **Tarea:** agregar una variable de entorno nueva validada con Zod.
-
----
-
-### 🟦 Módulo 6/7 — Arquitectura Limpia y dominio
+### 🟦 Módulo 7 — Arquitectura Limpia y dominio
 
 #### Clase 12 — Jueves 30/07 — Arquitectura Limpia: capas y dependencias
 **Objetivos:** comprender el corazón estructural del proyecto.
@@ -241,6 +245,10 @@ nav_order: 5
 - Adaptadores de recaudadoras (`BancardAdapter`, `CollectorAdapterFactory`) — patrón Adapter/Factory.
 - **Práctica:** implementar `CalculateCommissionUseCase` y sus reglas.
 - **Tarea:** agregar una nueva regla de comisión y probarla.
+
+---
+
+### 🟦 Módulo 8 — Casos de uso del negocio
 
 #### Clase 14 — Jueves 06/08 — Caso de uso: consulta de deudas (GetInvoices)
 **Objetivos:** primer flujo completo de punta a punta.
@@ -262,7 +270,7 @@ nav_order: 5
 
 ---
 
-### 🟦 Módulo 8 — Seguridad
+### 🟦 Módulo 9 — Seguridad
 
 #### Clase 16 — Jueves 13/08 — Seguridad: firmas HMAC SHA-512 y JWT
 **Objetivos:** proteger la API.
@@ -275,7 +283,7 @@ nav_order: 5
 
 ---
 
-### 🟦 Módulo 9 — Testing
+### 🟦 Módulo 10 — Testing
 
 #### Clase 17 — Martes 18/08 — Testing con Jest y Supertest
 **Objetivos:** asegurar calidad y evitar regresiones.
@@ -288,7 +296,7 @@ nav_order: 5
 
 ---
 
-### 🟦 Módulo 10 — Panel de administración (Frontend)
+### 🟦 Módulo 11 — Panel de administración (Frontend)
 
 #### Clase 18 — Jueves 20/08 — Panel admin I: React + Vite + Tailwind
 **Objetivos:** introducción al frontend del proyecto.
@@ -310,7 +318,7 @@ nav_order: 5
 
 ---
 
-### 🟦 Módulo 11 — Documentación y despliegue
+### 🟦 Módulo 12 — Documentación y despliegue
 
 #### Clase 20 — Jueves 27/08 — Swagger, build y despliegue (PM2 + Nginx) + cierre
 **Objetivos:** publicar el servicio y cerrar el curso.
