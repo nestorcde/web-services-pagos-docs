@@ -12,6 +12,7 @@ nav_order:
   - integration.md
   - configuration.md
   - deployment.md
+  - plan-de-curso.md
 
 plugins:
   - jekyll-remote-theme

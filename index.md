@@ -16,6 +16,7 @@ Documentación técnica del sistema de pagos y recaudaciones.
 | [Guía de Integración](integration) | Endpoints, autenticación y ejemplos de código para entidades recaudadoras |
 | [Guía de Configuración](configuration) | Alta de recaudadoras, productos y reglas de comisión |
 | [Manual de Operaciones](deployment) | Instalación, deploy, monitoreo y resolución de problemas |
+| [Plan de Curso](plan-de-curso) | Programa de 60 h para aprender a construir y entender el proyecto desde cero |
 
 ---
 
